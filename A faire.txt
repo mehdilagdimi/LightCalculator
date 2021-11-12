@@ -1,3 +1,5 @@
 -- Draw flow chart of algorithm
 -- Make calculator 
 --Take a screenshot of the flow chart and send it 
+--Logic operators
+--Transcodage
