@@ -5,29 +5,54 @@
 
 #define SIZE 20
 // arithmetic functions
-double arithmFunc(double x, double y, double oper){
+double arithmFunc(double x, double y, char oper){
     if (oper == '+') return x + y;
     else if (oper == '-') return x - y;
     else if (oper == '*' || oper == 'x') return x * y;
     else if (oper == '/') return x/y; // should I specify float(x) ?
 }
 
-//void input(){
-//    char operStr[SIZE];
-//    printf("Welcome to lightCalc!\n Please, type the arithmetic operation you want (please write it in this format XoperationY\n ex: 5+7\n");
-//    scanf(" %s", &operStr);
-//}
+double searchOperands(char operStr[], int indexOfOperand){
+    int numOfOperands = 2;
+    int sizeArray = strlen(operStr); printf("2nd mesure of size of array %d : \n", sizeArray);
+    //Let's try first the case where the user enters only two operands
+    double vars[numOfOperands];
+    char firstOperand[SIZE/2];
+    char secondOperand[SIZE/2];
+    for(int i = 0; i < indexOfOperand; i++){
+        firstOperand[i] = operStr[i];
+        printf("\ncharacter swapping : %c", operStr[i]);
+        }
+    firstOperand[indexOfOperand] = '\0';
+    for(int i = (indexOfOperand + 1); i < sizeArray; i++){
+        secondOperand[i] = operStr[i];
+        printf("\ncharacter swapping :%c", operStr[i]);
+        }
+    secondOperand[sizeArray]= '\0';
+    printf("\nFirst operand : %s \nSecond operand : %s\n", firstOperand, secondOperand);
+
+    //convert string operands to double
+    vars[0] = strtod(firstOperand, NULL); printf("first string to double %lf : \n", vars[0]);
+    vars[1] = strtod(secondOperand, NULL); printf("second string to double %lf : \n", vars[1]);
+    //call arithmfunc and pass the transformed operands into doubles and also the operator
+    arithmFunc(vars[0], vars[1], operStr[indexOfOperand]);
+}
+
 double searchOperator(char operStr[]){
     //should I search the operand as a char or as an int?? check strch()
     char operators[4] = {'+', '-', '*', '/'};
     char* ch;
-    double vars[2];
-    for (int i = 0; i < 4;i++){  //4 possible operands in this program
+    for (int i = 0; i < 4; i++){  //4 possible operands stored in "operators" array
         ch = strchr(operStr, operators[i]);
-        int index = (int)(ch - operStr);
-        printf("%d", index);
-        if(ch == NULL) { printf("continue\n"));
+        if(ch == NULL) {
+            printf("%c operand not found, continue to check for other operands\n", operators[i]);
             continue;}
+        else {
+            int indexOfOperand = (int)(ch - operStr);
+            printf("Operand %c found in the array, its index is %d \n",operators[i], indexOfOperand);
+            return (searchOperands(operStr,indexOfOperand));
+        }
+
 
 //        else {
 //            char splitStr1[10];
@@ -47,7 +72,6 @@ double searchOperator(char operStr[]){
 //        }
     }
 
-        return (arithmFunc(vars[0], vars[1] ,ch[0]));
 }
 
 void main(){
@@ -55,7 +79,10 @@ void main(){
     char operStr[SIZE];
     printf("Welcome to lightCalc!\n Please, type the arithmetic operation you want (please write it in this format XoperationY\n ex: 5+7\n");
     scanf("%s", &operStr);
+    printf("First mesure of array size : %d\n", strlen(operStr));
     result = searchOperator(operStr);
+
+    //results = arithmFunc();
     printf("\n Result of operation : %f", result);
 
 }
